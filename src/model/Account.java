@@ -5,6 +5,11 @@ public class Account {
 	private int identf;
 	private float balance;
 	
+	public Account(int identf) {
+		this.identf = identf;
+		this.balance = 0;
+	}
+	
 	public int getIdentf() {
 		return identf;
 	}
