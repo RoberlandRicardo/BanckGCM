@@ -39,7 +39,10 @@ public class Interface {
 				showRegisterAccount();
 				break;
 			}
-			
+			case 2: {
+				showCheckBalance();
+				break;
+			}
 		}
 	}
 	
@@ -50,6 +53,16 @@ public class Interface {
 			+ "Digite um número: "
 		);
 		
+		int response = sc.nextInt();
+	}
+	
+	private void showCheckBalance() {
+		System.out.print(
+				"Digite o número identificador da conta que você que verificar o saldo\n"
+				+ "\n"
+				+ "Digite o número: "
+			);
+			
 		int response = sc.nextInt();
 	}
 	
