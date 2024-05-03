@@ -2,12 +2,17 @@ package program;
 
 import java.util.Scanner;
 
+import bank.Bank;
+import model.Account;
+
 public class Interface {
 	
 	private Scanner sc;
+	private Bank bank;
 	
-	public Interface(Scanner sc) {
+	public Interface(Scanner sc, Bank bank) {
 		this.sc = sc;
+		this.bank = bank;
 	}
 	
 	public void init() {
@@ -74,6 +79,10 @@ public class Interface {
 		);
 		
 		int response = sc.nextInt();
+		
+		Account newAccount = bank.registerAccount(response);
+		
+		System.out.println("Parabéns! Sua conta foi criada com o identificador: " + newAccount.getIdentf() + " .");
 	}
 	
 	private void showCheckBalance() {
