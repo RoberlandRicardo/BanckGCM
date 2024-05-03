@@ -89,6 +89,25 @@ public class Interface {
 		int quant = sc.nextInt();
 	}
 	
+	private void showMakeDebit() {
+		System.out.print(
+				"Digite o número identificador da conta que você quer realizar um débito\n"
+				+ "\n"
+				+ "Digite o número: "
+			);
+			
+		int ident = sc.nextInt();
+		
+		System.out.print(
+					"---------------------------------------------------------\n"
+				+ "Digite a quantidade de dinheiro que você pretende remover\n"
+				+ "\n"
+				+ "Digite uma quantidade: "
+			);
+			
+		int quant = sc.nextInt();
+	}
+	
 	private void clearScreen() {
 		System.out.println("\033[H\033[2J");
 		System.out.flush();
