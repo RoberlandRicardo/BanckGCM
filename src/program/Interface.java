@@ -43,6 +43,10 @@ public class Interface {
 				showCheckBalance();
 				break;
 			}
+			case 3: {
+				showMakeDeposit();
+				break;
+			}
 		}
 	}
 	
@@ -64,6 +68,25 @@ public class Interface {
 			);
 			
 		int response = sc.nextInt();
+	}
+	
+	private void showMakeDeposit() {
+		System.out.print(
+				"Digite o número identificador da conta que você quer adicionar crédito\n"
+				+ "\n"
+				+ "Digite o número: "
+			);
+			
+		int ident = sc.nextInt();
+		
+		System.out.print(
+					"---------------------------------------------------------\n"
+				+ "Digite a quantidade de crédito que você pretende adicionar\n"
+				+ "\n"
+				+ "Digite uma quantidade: "
+			);
+			
+		int quant = sc.nextInt();
 	}
 	
 	private void clearScreen() {
