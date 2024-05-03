@@ -14,6 +14,11 @@ public class Bank {
 	}
 	
 	public Account registerAccount(int identf) {
+		for (Account ac : accounts) {
+			if (ac.getIdentf() == identf) {
+				return null;
+			}
+		}
 		Account newAccount = new Account(identf);
 		accounts.add(newAccount);
 		return newAccount;

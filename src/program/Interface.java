@@ -82,7 +82,11 @@ public class Interface {
 		
 		Account newAccount = bank.registerAccount(response);
 		
-		System.out.println("Parabéns! Sua conta foi criada com o identificador: " + newAccount.getIdentf() + " .");
+		if (newAccount == null) {
+			System.out.println("Erro: Já existe uma conta com esse identificador.");
+		} else {
+			System.out.println("Parabéns! Sua conta foi criada com o identificador: " + newAccount.getIdentf() + " .");
+		}
 	}
 	
 	private void showCheckBalance() {
