@@ -23,4 +23,33 @@ public class Bank {
 		accounts.add(newAccount);
 		return newAccount;
 	}
+
+	public boolean transfer(int idOrigin, int idDestiny, float value){
+		Account account1 = null;
+		Account account2 = null;
+		
+		boolean bothExists = false;
+		
+		for (Account ac : accounts) {
+			if (ac.getIdentf() == idOrigin) {
+				account1 = ac;		
+			}
+			if (ac.getIdentf() == idDestiny) {
+				account2 = ac;		
+			}
+			if (account1 != null && account2 != null) {
+				bothExists = true;
+				break;
+			}
+		}
+
+		if(bothExists){
+			//account1.debit(value);
+			//account2.credit(value);
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 }

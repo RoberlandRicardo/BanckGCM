@@ -154,17 +154,21 @@ public class Interface {
 			);
 			
 		int identDest = sc.nextInt();
-		
+	
 		System.out.print(
-					"---------------------------------------------------------\n"
-				+ "Digite a quantidade de dinheiro que você pretende transferir\n"
-				+ "\n"
-				+ "Digite uma quantidade: "
+			"---------------------------------------------------------\n"
+			+ "Digite a quantidade de dinheiro que você pretende transferir\n"
+			+ "\n"
+			+ "Digite uma quantidade: "
 			);
 			
-		float quant = sc.nextFloat();
-	}
-	
+			float quant = sc.nextFloat();
+			
+			boolean response = bank.transfer(identOrig, identDest, quant);
+			//TODO: Mostrar mensagem de transferência realizada ou não.
+			System.out.println(response);
+		}
+		
 	private void clearScreen() {
 		System.out.println("\033[H\033[2J");
 		System.out.flush();
