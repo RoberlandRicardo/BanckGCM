@@ -44,12 +44,16 @@ public class Bank {
 		}
 
 		if(bothExists){
-			//account1.debit(value);
+			debit(account1, value);
 			//account2.credit(value);
 			return true;
 		}
 		else{
 			return false;
 		}
+	}
+
+	public void debit(Account account, float value){
+		account.decreasseBalance(value);
 	}
 }
