@@ -153,6 +153,8 @@ public class Interface {
 			);
 			
 		float quant = sc.nextFloat();
+		
+		bank.addDebit(ident, quant);
 	}
 	
 	private void showMakeTransfer() {
@@ -182,9 +184,7 @@ public class Interface {
 			
 			float quant = sc.nextFloat();
 			
-			boolean response = bank.transfer(identOrig, identDest, quant);
-			//TODO: Mostrar mensagem de transferência realizada ou não.
-			System.out.println(response);
+			bank.transfer(identOrig, identDest, quant);
 		}
 		
 	private void clearScreen() {

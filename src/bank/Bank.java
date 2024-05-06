@@ -24,37 +24,29 @@ public class Bank {
 		return newAccount;
 	}
 
-	public boolean transfer(int idOrigin, int idDestiny, float value){
-		Account account1 = null;
-		Account account2 = null;
-		
-		boolean bothExists = false;
-		
-		for (Account ac : accounts) {
-			if (ac.getIdentf() == idOrigin) {
-				account1 = ac;		
-			}
-			if (ac.getIdentf() == idDestiny) {
-				account2 = ac;		
-			}
-			if (account1 != null && account2 != null) {
-				bothExists = true;
-				break;
-			}
-		}
+	public void transfer(int idOrigin, int idDestiny, float value){
+		Account account1 = getAccountById(idOrigin);
+		Account account2 = getAccountById(idDestiny);
+
+		boolean bothExists = account1 != null && account2 != null;
 
 		if(bothExists){
-			debit(account1, value);
-			//account2.credit(value);
-			return true;
+			addDebit(idOrigin, value);
+			addCredit(idDestiny, value);
 		}
 		else{
-			return false;
+			System.out.println("Conta não encontrada.");
 		}
 	}
 
-	public void debit(Account account, float value){
-		account.decreasseBalance(value);
+
+	public void addDebit(int id, float value) {
+		Account account = getAccountById(id);
+		if (account != null) {
+			account.decreasseBalance(value);
+		} else {
+			System.out.println("Conta não encontrada.");
+		}
 	}
 
 	public Account getAccountById(int id) {
@@ -67,11 +59,12 @@ public class Bank {
 	}
 
 	public void addCredit(int id, float value) {
-    Account account = getAccountById(id);
-    if (account != null) {
-        account.increasseBalance(value);
-    } else {
-        System.out.println("Conta não encontrada.");
-    }
-}
+    	Account account = getAccountById(id);
+    	if (account != null) {
+        	account.increasseBalance(value);
+    	} 
+		else {
+        	System.out.println("Conta não encontrada.");
+    	}
+	}
 }
