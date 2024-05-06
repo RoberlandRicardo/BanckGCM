@@ -132,6 +132,8 @@ public class Interface {
 			);
 			
 		float quant = sc.nextFloat();
+
+		bank.addCredit(ident, quant);
 	}
 	
 	private void showMakeDebit() {

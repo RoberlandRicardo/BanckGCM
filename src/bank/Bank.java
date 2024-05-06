@@ -65,4 +65,13 @@ public class Bank {
 		}
 		return null;
 	}
+
+	public void addCredit(int id, float value) {
+    Account account = getAccountById(id);
+    if (account != null) {
+        account.increasseBalance(value);
+    } else {
+        System.out.println("Conta não encontrada.");
+    }
+}
 }
