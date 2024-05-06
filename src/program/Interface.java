@@ -18,6 +18,14 @@ public class Interface {
 	public void init() {
 		showMenu();
 	}
+
+	// método para substituir o clearScreen
+	private void pauseBeforeClearingScreen() {
+		System.out.println("Pressione Enter para continuar...");
+		sc.nextLine();
+		sc.nextLine();
+		clearScreen();
+	}
 	
 	private void showMenu() {
 		
@@ -67,7 +75,7 @@ public class Interface {
 				}
 			}
 			
-			clearScreen();
+			pauseBeforeClearingScreen();
 		}
 	}
 	
@@ -97,6 +105,14 @@ public class Interface {
 			);
 			
 		int response = sc.nextInt();
+
+		Account account = bank.getAccountById(response);
+
+		if (account == null) {
+			System.out.println("Erro: Não existe uma conta com esse identificador.");
+		} else {
+			System.out.println("O saldo da conta " + account.getIdentf() + " é de: " + account.getBalance());
+		}
 	}
 	
 	private void showMakeDeposit() {

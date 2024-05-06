@@ -56,4 +56,13 @@ public class Bank {
 	public void debit(Account account, float value){
 		account.decreasseBalance(value);
 	}
+
+	public Account getAccountById(int id) {
+		for(Account account : this.accounts) {
+			if(account.getIdentf() == id) {
+				return account;
+			}
+		}
+		return null;
+	}
 }
