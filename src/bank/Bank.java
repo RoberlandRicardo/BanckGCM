@@ -96,4 +96,20 @@ public class Bank {
         	System.out.println("Conta não encontrada.");
     	}
 	}
+
+	public void yieldInterest(int id, float rate) {
+		for(Account account : this.accounts) {
+			if(account.getIdentf() == id) {
+				if (account instanceof SavingsAccount) {
+					((SavingsAccount) account).yieldInterest(rate);
+				}
+				/* caso precise verificar se a conta é poupança
+				else {
+					System.out.println("Conta não é uma conta poupança.");
+				}
+				*/
+				return;
+			}
+		}
+	}
 }
