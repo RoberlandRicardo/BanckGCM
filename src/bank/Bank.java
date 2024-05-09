@@ -30,21 +30,28 @@ public class Bank {
 
 		boolean bothExists = account1 != null && account2 != null;
 
-		if(bothExists){
+		if(bothExists && account1.getBalance() >= value){
 			addDebit(idOrigin, value);
 			addCredit(idDestiny, value);
 		}
+		else if(account1.getBalance() < value){
+			System.out.println("Conta com saldo insuficiente.");
+		}
 		else{
-			System.out.println("Conta não encontrada.");
+			System.out.println("Conta não encontrada");
 		}
 	}
 
 
 	public void addDebit(int id, float value) {
 		Account account = getAccountById(id);
-		if (account != null) {
+		if (account != null && account.getBalance() >= value) {
 			account.decreasseBalance(value);
-		} else {
+		}
+		else if(account.getBalance() < value){
+			System.out.println("Conta com saldo insuficiente.");
+		}
+		else {
 			System.out.println("Conta não encontrada.");
 		}
 	}
