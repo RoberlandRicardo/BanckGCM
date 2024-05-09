@@ -31,7 +31,7 @@ public class Interface {
 		
 		int response = 0;
 		
-		while (response != 6) {
+		while (true) {
 			System.out.print(
 				  "****************************\n"
 				+ "Bem vindo ao Banco do Brasil\n"
@@ -44,7 +44,8 @@ public class Interface {
 				+ "3 - Adicionar crédito\n"
 				+ "4 - Realizar débito\n"
 				+ "5 - Realizar transferência\n"
-				+ "6 - Sair do programa\n"
+				+ "6 - Render Juros\n"
+				+ "7 - Sair do programa\n"
 				+ "\n"
 			);
 			
@@ -72,6 +73,14 @@ public class Interface {
 				case 5: {
 					showMakeTransfer();
 					break;
+				}
+				case 6: {
+					showMakeYieldInterest();
+					break;
+				}
+				case 7: {
+					System.out.println("Obrigado por usar o Banco do Brasil!");
+					return;
 				}
 			}
 			
@@ -199,5 +208,26 @@ public class Interface {
 	private void clearScreen() {
 		System.out.println("\033[H\033[2J");
 		System.out.flush();
+	}
+
+	private void showMakeYieldInterest() {
+		System.out.print(
+			"Digite o número identificador da conta que você quer adicionar juros\n"
+			+ "\n"
+			+ "Digite o número: "
+		);
+		
+		int ident = sc.nextInt();
+		
+		System.out.print(
+			"---------------------------------------------------------\n"
+			+ "Digite a taxa de juros que você pretende adicionar\n"
+			+ "\n"
+			+ "Digite uma taxa: "
+		);
+		
+		float rate = sc.nextFloat();
+		
+		bank.yieldInterest(ident, rate);
 	}
 }
