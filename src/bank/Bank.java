@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Account;
+import model.BonusAccount;
+import model.SavingsAccount;
 
 public class Bank {
 	
@@ -13,15 +15,28 @@ public class Bank {
 		 accounts = new ArrayList();
 	}
 	
-	public Account registerAccount(int identf) {
+	public Account registerAccount(int identf, char typeOfAccount) {
 		for (Account ac : accounts) {
 			if (ac.getIdentf() == identf) {
 				return null;
 			}
 		}
-		Account newAccount = new Account(identf);
+		
+		Account newAccount;
+		
+		if(typeOfAccount == 'n'){
+			newAccount = new Account(identf);
+		}
+		else if(typeOfAccount == 'b'){
+			newAccount = new BonusAccount(identf);
+		}
+		else{
+			newAccount = new SavingsAccount(identf);
+		}
+
 		accounts.add(newAccount);
 		return newAccount;
+		
 	}
 
 	public void transfer(int idOrigin, int idDestiny, float value){
@@ -69,6 +84,9 @@ public class Bank {
     	Account account = getAccountById(id);
     	if (account != null) {
         	account.increasseBalance(value);
+			if(account instanceof BonusAccount){
+				//account.add	
+			}
     	} 
 		else {
         	System.out.println("Conta não encontrada.");

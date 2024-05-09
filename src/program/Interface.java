@@ -87,8 +87,17 @@ public class Interface {
 		);
 		
 		int response = sc.nextInt();
+
+		System.out.print(
+			"---------------------------------------------------------\n" 
+			+ "Para registrar sua conta precisaremos de tipo de conta (n: normal | b: bonus | p: poupança)\n"
+			+ "\n"
+			+ "Digite um caractere: "
+		);
 		
-		Account newAccount = bank.registerAccount(response);
+		char type = sc.next().charAt(0);
+		
+		Account newAccount = bank.registerAccount(response, type);
 		
 		if (newAccount == null) {
 			System.out.println("Erro: Já existe uma conta com esse identificador.");
