@@ -48,6 +48,9 @@ public class Bank {
 		if(bothExists && account1.getBalance() >= value){
 			addDebit(idOrigin, value);
 			addCredit(idDestiny, value);
+			if(account2 instanceof BonusAccount){
+				int pontos = ((BonusAccount) account2).addTransferScore(value);	
+			}
 		}
 		else if(account1.getBalance() < value){
 			System.out.println("Conta com saldo insuficiente.");
@@ -85,7 +88,8 @@ public class Bank {
     	if (account != null) {
         	account.increasseBalance(value);
 			if(account instanceof BonusAccount){
-				//account.add	
+				int pontos = ((BonusAccount) account).addCreditScore(value);	
+				System.out.println( pontos == 1 ? pontos + " Ponto adicionado, " : pontos + " Pontos adicionados, " + "id da conta : "+ account.getIdentf());
 			}
     	} 
 		else {
