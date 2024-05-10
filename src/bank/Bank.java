@@ -40,6 +40,11 @@ public class Bank {
 	}
 
 	public void transfer(int idOrigin, int idDestiny, float value){
+		if (value < 0) {
+            System.out.println("O valor não pode ser negativo.");
+			return;
+        }
+		
 		Account account1 = getAccountById(idOrigin);
 		Account account2 = getAccountById(idDestiny);
 
@@ -62,6 +67,10 @@ public class Bank {
 
 
 	public void addDebit(int id, float value) {
+		if (value < 0) {
+            System.out.println("O valor não pode ser negativo.");
+			return;
+        }
 		Account account = getAccountById(id);
 		if (account != null && account.getBalance() >= value) {
 			account.decreasseBalance(value);
@@ -84,6 +93,10 @@ public class Bank {
 	}
 
 	public void addCredit(int id, float value) {
+		if (value < 0) {
+            System.out.println("O valor não pode ser negativo.");
+			return;
+        }
     	Account account = getAccountById(id);
     	if (account != null) {
         	account.increasseBalance(value);
