@@ -15,7 +15,7 @@ public class Bank {
 		 accounts = new ArrayList();
 	}
 	
-	public Account registerAccount(int identf, char typeOfAccount) {
+	public Account registerAccount(int identf, char typeOfAccount, float initialBalance) {
 		for (Account ac : accounts) {
 			if (ac.getIdentf() == identf) {
 				return null;
@@ -32,6 +32,7 @@ public class Bank {
 		}
 		else{
 			newAccount = new SavingsAccount(identf);
+			newAccount.increasseBalance(initialBalance);
 		}
 
 		accounts.add(newAccount);

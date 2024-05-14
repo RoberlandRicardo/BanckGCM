@@ -104,9 +104,23 @@ public class Interface {
 			+ "Digite um caractere: "
 		);
 		
-		char type = sc.next().charAt(0);
-		
-		Account newAccount = bank.registerAccount(response, type);
+		Character type = sc.next().charAt(0);
+
+		Account newAccount;
+
+		if(type.equals('p')){
+			System.out.print(
+				"Diga o saldo inicial :\n"
+			);
+
+			float initialBalance = sc.nextFloat();
+
+			newAccount = bank.registerAccount(response, type, initialBalance);
+		}
+		else{
+			newAccount = bank.registerAccount(response, type, 0);
+		}
+
 		
 		if (newAccount == null) {
 			System.out.println("Erro: Já existe uma conta com esse identificador.");
