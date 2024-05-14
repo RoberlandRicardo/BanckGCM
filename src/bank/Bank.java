@@ -76,7 +76,11 @@ public class Bank {
 			account.decreasseBalance(value);
 		}
 		else if(account.getBalance() < value){
-			System.out.println("Conta com saldo insuficiente.");
+			if (!(account instanceof SavingsAccount) && (account.getBalance() - value >= - 1000)) {
+				account.decreasseBalance(value);
+			} else {
+				System.out.println("Conta com saldo insuficiente.");
+			}
 		}
 		else {
 			System.out.println("Conta não encontrada.");
