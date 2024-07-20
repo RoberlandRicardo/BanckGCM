@@ -1,4 +1,12 @@
-package model;
+package com.example.demo.model;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@Getter
+@Setter
 
 public class Account {
 	
@@ -8,22 +16,6 @@ public class Account {
 	public Account(int identf) {
 		this.identf = identf;
 		this.balance = 0;
-	}
-	
-	public int getIdentf() {
-		return identf;
-	}
-	
-	public void setIdentf(int identf) {
-		this.identf = identf;
-	}
-	
-	public float getBalance() {
-		return balance;
-	}
-
-	public void setBalance(float balance) {
-		this.balance = balance;
 	}
 	
 	public void increasseBalance(float balance) {
