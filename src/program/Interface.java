@@ -1,9 +1,10 @@
 package program;
 
-import java.util.Scanner;
-
 import bank.Bank;
+import java.util.Scanner;
 import model.Account;
+import model.BonusAccount;
+import model.SavingsAccount;
 
 public class Interface {
 	
@@ -45,7 +46,8 @@ public class Interface {
 				+ "4 - Realizar débito\n"
 				+ "5 - Realizar transferência\n"
 				+ "6 - Render Juros\n"
-				+ "7 - Sair do programa\n"
+				+ "7 - Consultar Dados\n"
+				+ "8 - Sair do programa\n"
 				+ "\n"
 			);
 			
@@ -79,6 +81,10 @@ public class Interface {
 					break;
 				}
 				case 7: {
+					showCheckData();
+					break;
+				}
+				case 8: {
 					System.out.println("Obrigado por usar o Banco do Brasil!");
 					return;
 				}
@@ -243,5 +249,35 @@ public class Interface {
 		float rate = sc.nextFloat();
 		
 		bank.yieldInterest(ident, rate);
+	}
+
+	private void showCheckData() {
+		System.out.print(
+				"Digite o número identificador da conta que você que verificar os dados\n"
+				+ "\n"
+				+ "Digite o número: "
+			);
+			
+		int response = sc.nextInt();
+
+		Account account = bank.getAccountById(response);
+
+		if (account == null) {
+			System.out.println("Erro: Não existe uma conta com esse identificador.");
+		} else {
+			String txt = "";
+			if(account instanceof BonusAccount){
+				txt += "Conta bônus \nO score é : " + ((BonusAccount) account).getScore();
+			}
+			else if(account instanceof SavingsAccount){
+				txt += "Conta poupança";
+			}
+			else if(account instanceof Account){
+				txt += "Conta regular";
+			}
+			
+			txt += "\nO saldo da conta " + account.getIdentf() + " é de: " + account.getBalance();
+			System.out.println(txt);
+		}
 	}
 }
