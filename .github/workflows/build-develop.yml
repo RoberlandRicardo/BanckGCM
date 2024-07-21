@@ -1,10 +1,9 @@
-name: CI Pipeline
+name: Generate Build
 
 on:
   push:
     branches:
       - develop
-      - features/23-criação-de-pipeline-para-realizar-a-build-do-projeto
   pull_request:
     branches:
       - develop
