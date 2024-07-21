@@ -1,21 +1,13 @@
 package com.example.demo.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.dto.AccountDTO;
 import com.example.demo.dto.TransferDTO;
 import com.example.demo.model.Account;
 import com.example.demo.service.AccountService;
-
-
 
 @RestController
 @RequestMapping("/banco/conta")
@@ -24,8 +16,9 @@ public class AccountController {
     private AccountService service;
 
     @PostMapping
-    public Account adicionar(@RequestBody AccountDTO account){
-        return service.adicionar(account);
+    public ResponseEntity<Account> adicionar(@RequestBody AccountDTO account){
+        Account newAccount = service.adicionar(account);
+        return ResponseEntity.ok(newAccount);
     }
 
     @GetMapping("/{id}")
@@ -49,13 +42,12 @@ public class AccountController {
     }
 
     @PutMapping("/transferencia")
-    public void debitar(@RequestBody TransferDTO data) {
-        service.debitar(data); 
+    public void transferir(@RequestBody TransferDTO data) { // Corrigido o nome do método
+        service.transferir(data); // Corrigido o nome do método
     }
 
     @PutMapping("/rendimento/{id}/{taxa}")
     public void renderJuros(@PathVariable int id, @PathVariable float taxa) {
         service.renderJuros(id, taxa); 
     }
-    
 }

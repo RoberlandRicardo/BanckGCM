@@ -18,11 +18,11 @@ public class Account {
 		this.balance = 0;
 	}
 	
-	public void increasseBalance(float balance) {
+	public void increaseBalance(float balance) {
 		this.balance += balance;
 	}
 	
-	public void decreasseBalance(float balance) {
+	public void decreaseBalance(float balance) {
 		this.balance -= balance;
 	}
 	

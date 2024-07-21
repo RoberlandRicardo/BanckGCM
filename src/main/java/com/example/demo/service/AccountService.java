@@ -13,7 +13,7 @@ public class AccountService {
     Bank bank = new Bank();
     
     public Account adicionar(AccountDTO account){
-        Account response = bank.registerAccount(account.getIdentf(),account.getAccountType(),  account.getBalance());
+        Account response = bank.registerAccount(account.getIdentf(), account.getAccountType(), account.getBalance());
         return response;
     }
 
@@ -35,7 +35,7 @@ public class AccountService {
         bank.addDebit(id, value);
     }
 
-    public void debitar(TransferDTO data) {
+    public void transferir(TransferDTO data) { // Corrigido o nome do método
         bank.transfer(data.getFrom(), data.getTo(), data.getAmount());
     }
 

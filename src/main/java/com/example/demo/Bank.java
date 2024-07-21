@@ -12,7 +12,7 @@ public class Bank {
     private List<Account> accounts;
 
     public Bank() {
-        accounts = new ArrayList();
+        accounts = new ArrayList<>();
     }
 
     public Account registerAccount(int identf, char typeOfAccount, float initialBalance) {
@@ -30,17 +30,16 @@ public class Bank {
             newAccount = new BonusAccount(identf);
         } else {
             newAccount = new SavingsAccount(identf);
-            newAccount.increasseBalance(initialBalance);
+            newAccount.increaseBalance(initialBalance);
         }
 
         accounts.add(newAccount);
         return newAccount;
-
     }
 
     public void transfer(int idOrigin, int idDestiny, float value) {
-        if (value < 0) {
-            System.out.println("O valor não pode ser negativo.");
+        if (value <= 0) {
+            System.out.println("O valor não pode ser negativo ou zero.");
             return;
         }
 
@@ -54,8 +53,9 @@ public class Bank {
             addCredit(idDestiny, value);
             if (account2 instanceof BonusAccount) {
                 int pontos = ((BonusAccount) account2).addTransferScore(value);
+                System.out.println(pontos + " pontos adicionados à conta " + account2.getIdentf());
             }
-        } else if (account1.getBalance() < value) {
+        } else if (account1 != null && account1.getBalance() < value) {
             System.out.println("Conta com saldo insuficiente.");
         } else {
             System.out.println("Conta não encontrada");
@@ -63,16 +63,16 @@ public class Bank {
     }
 
     public void addDebit(int id, float value) {
-        if (value < 0) {
-            System.out.println("O valor não pode ser negativo.");
+        if (value <= 0) {
+            System.out.println("O valor não pode ser negativo ou zero.");
             return;
         }
         Account account = getAccountById(id);
         if (account != null && account.getBalance() >= value) {
-            account.decreasseBalance(value);
-        } else if (account.getBalance() < value) {
-            if (!(account instanceof SavingsAccount) && (account.getBalance() - value >= - 1000)) {
-                account.decreasseBalance(value);
+            account.decreaseBalance(value);
+        } else if (account != null && account.getBalance() < value) {
+            if (!(account instanceof SavingsAccount) && (account.getBalance() - value >= -1000)) {
+                account.decreaseBalance(value);
             } else {
                 System.out.println("Conta com saldo insuficiente.");
             }
@@ -91,16 +91,17 @@ public class Bank {
     }
 
     public void addCredit(int id, float value) {
-        if (value < 0) {
-            System.out.println("O valor não pode ser negativo.");
+        if (value <= 0) {
+            System.out.println("O valor não pode ser negativo ou zero.");
             return;
         }
         Account account = getAccountById(id);
         if (account != null) {
-            account.increasseBalance(value);
+            account.increaseBalance(value);
             if (account instanceof BonusAccount) {
                 int pontos = ((BonusAccount) account).addCreditScore(value);
-                System.out.println(pontos == 1 ? pontos + " Ponto adicionado, " : pontos + " Pontos adicionados, " + "id da conta : " + account.getIdentf());
+                System.out.println(pontos == 1 ? pontos + " Ponto adicionado, "
+                        : pontos + " Pontos adicionados, " + "id da conta : " + account.getIdentf());
             }
         } else {
             System.out.println("Conta não encontrada.");
@@ -113,11 +114,6 @@ public class Bank {
                 if (account instanceof SavingsAccount) {
                     ((SavingsAccount) account).yieldInterest(rate);
                 }
-                /* caso precise verificar se a conta é poupança
-				else {
-					System.out.println("Conta não é uma conta poupança.");
-				}
-                 */
                 return;
             }
         }
@@ -131,5 +127,4 @@ public class Bank {
         }
         return -1;
     }
-
 }
