@@ -2,8 +2,6 @@ name: Create Artifact
 
 on:
   push:
-    branches:
-      - features/23-criação-de-pipeline-para-realizar-a-build-do-projeto
     tags:
       - 'rc-*'
 
