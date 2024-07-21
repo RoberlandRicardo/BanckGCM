@@ -6,6 +6,7 @@ import com.example.demo.Bank;
 import com.example.demo.dto.AccountDTO;
 import com.example.demo.dto.TransferDTO;
 import com.example.demo.model.Account;
+import com.example.demo.model.BonusAccount;
 
 @Service
 public class AccountService {
@@ -19,6 +20,9 @@ public class AccountService {
 
     public Account consultarConta(Integer id) {
          Account response = bank.getAccountById(id);
+         if(response instanceof BonusAccount){
+            response = (BonusAccount) response;
+         }
          return response;
     }
 
