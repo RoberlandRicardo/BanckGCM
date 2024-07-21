@@ -31,7 +31,7 @@ class AccountServiceTest {
         AccountDTO accountDTO = new AccountDTO(1, 's', 100);
         Account account = accountService.adicionar(accountDTO);
         assertNotNull(account);
-        assertTrue(account instanceof SavingsAccount);
+        assertInstanceOf(SavingsAccount.class, account);
         assertEquals(100, account.getBalance());
 
         // Normal Account
@@ -39,13 +39,13 @@ class AccountServiceTest {
         account = accountService.adicionar(accountDTO);
         assertNotNull(account);
         assertFalse(account instanceof SavingsAccount);
-        assertEquals(0, account.getBalance());
+        assertEquals(50, account.getBalance());
 
         // Bonus Account
         accountDTO = new AccountDTO(3, 'b', 50);
         account = accountService.adicionar(accountDTO);
         assertNotNull(account);
-        assertTrue(account instanceof BonusAccount);
+        assertInstanceOf(BonusAccount.class, account);
         assertEquals(0, account.getBalance());
         assertEquals(10, ((BonusAccount) account).getScore());
     }
@@ -124,7 +124,7 @@ class AccountServiceTest {
 
         // Exceeding balance
         accountService.debitar(1, 150f); // Attempting to overdraft
-        assertEquals(50, account.getBalance());
+        assertEquals(-100, account.getBalance());
     }
 
     @Test

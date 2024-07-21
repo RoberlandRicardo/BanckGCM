@@ -13,7 +13,7 @@ public class BonusAccount extends Account {
     }
 
     public int addTransferScore(float value){
-        return this.score = (int)value/200;
+        return this.score = (int)value/150;
     }
 
     public int getScore() {

@@ -26,6 +26,7 @@ public class Bank {
 
         if (typeOfAccount == 'n') {
             newAccount = new Account(identf);
+            newAccount.increaseBalance(initialBalance);
         } else if (typeOfAccount == 'b') {
             newAccount = new BonusAccount(identf);
         } else {
