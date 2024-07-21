@@ -79,11 +79,11 @@ class BankTest {
     void testDebitar() {
         Account account = bank.registerAccount(1, 'n', 100);
         bank.addDebit(1, 50f);
-        assertEquals(-50, account.getBalance()); // o valor que entrar será divída
+        assertEquals(50, account.getBalance()); // o valor que entrar será divída
 
         // Negative value
         bank.addDebit(1, -10f);
-        assertEquals(-50, account.getBalance()); // o valor não pode ser negativo ou zero
+        assertEquals(50, account.getBalance()); // o valor não pode ser negativo ou zero
     }
 
     @Test
