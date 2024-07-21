@@ -1,26 +1,27 @@
-package program;
+package com.front;
 
-import bank.Bank;
+import java.io.IOException;
+import java.net.http.HttpResponse;
 import java.util.Scanner;
-import model.Account;
-import model.BonusAccount;
-import model.SavingsAccount;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.front.dto.AccountDTO;
 
 public class Interface {
 
     private Scanner sc;
-    private Bank bank;
+    private AccountClient accountClient;
 
-    public Interface(Scanner sc, Bank bank) {
+    public Interface(Scanner sc, AccountClient accountClient) {
         this.sc = sc;
-        this.bank = bank;
+        this.accountClient = accountClient;
     }
 
     public void init() {
         showMenu();
     }
 
-    // método para substituir o clearScreen
     private void pauseBeforeClearingScreen() {
         System.out.println("Pressione Enter para continuar...");
         sc.nextLine();
@@ -29,7 +30,6 @@ public class Interface {
     }
 
     private void showMenu() {
-
         int response = 0;
 
         while (true) {
@@ -52,42 +52,37 @@ public class Interface {
             );
 
             response = sc.nextInt();
-
             clearScreen();
 
-            switch (response) {
-                case 1: {
-                    showRegisterAccount();
-                    break;
+            try {
+                switch (response) {
+                    case 1:
+                        showRegisterAccount();
+                        break;
+                    case 2:
+                        showCheckBalance();
+                        break;
+                    case 3:
+                        showMakeDeposit();
+                        break;
+                    case 4:
+                        showMakeDebit();
+                        break;
+                    case 5:
+                        showMakeTransfer();
+                        break;
+                    case 6:
+                        showMakeYieldInterest();
+                        break;
+                    case 7:
+                        showCheckData();
+                        break;
+                    case 8:
+                        System.out.println("Obrigado por usar o Banco do Brasil!");
+                        return;
                 }
-                case 2: {
-                    showCheckBalance();
-                    break;
-                }
-                case 3: {
-                    showMakeDeposit();
-                    break;
-                }
-                case 4: {
-                    showMakeDebit();
-                    break;
-                }
-                case 5: {
-                    showMakeTransfer();
-                    break;
-                }
-                case 6: {
-                    showMakeYieldInterest();
-                    break;
-                }
-                case 7: {
-                    showCheckData();
-                    break;
-                }
-                case 8: {
-                    System.out.println("Obrigado por usar o Banco do Brasil!");
-                    return;
-                }
+            } catch (IOException | InterruptedException e) {
+                System.out.println("Ocorreu um erro ao realizar a operação: " + e.getMessage());
             }
 
             pauseBeforeClearingScreen();
@@ -100,60 +95,73 @@ public class Interface {
                         + "\n"
                         + "Digite um número: "
         );
-
+    
         int response = sc.nextInt();
-
+    
         System.out.print(
                 "---------------------------------------------------------\n"
                         + "Para registrar sua conta precisaremos de tipo de conta (n: normal | b: bonus | p: poupança)\n"
                         + "\n"
                         + "Digite um caractere: "
         );
-
+    
         Character type = sc.next().charAt(0);
-
-        Account newAccount;
-
-        if(type.equals('p')){
+    
+        float initialBalance = 0;
+        if (type.equals('p') || type.equals('n')) {
             System.out.print(
-                    "Diga o saldo inicial :\n"
+                    "Diga o saldo inicial:\n"
             );
-
-            float initialBalance = sc.nextFloat();
-
-            newAccount = bank.registerAccount(response, type, initialBalance);
+            initialBalance = sc.nextFloat();
         }
-        else{
-            newAccount = bank.registerAccount(response, type, 0);
-        }
-
-
-        if (newAccount == null) {
-            System.out.println("Erro: Já existe uma conta com esse identificador.");
-        } else {
-            System.out.println("Parabéns! Sua conta foi criada com o identificador: " + newAccount.getIdentf() + " .");
+    
+        AccountDTO accountDTO = new AccountDTO(response, type, initialBalance);
+        
+        try {
+            HttpResponse<String> serverResponse = accountClient.registerAccount(accountDTO);
+            String responseBody = serverResponse.body();
+    
+            // Verifica a resposta do servidor para determinar se a conta foi criada com sucesso
+            if (responseBody.contains("Erro")) {
+                System.out.println("Erro: Já existe uma conta com esse identificador.");
+            } else {
+                System.out.println("Parabéns! Sua conta foi criada com o identificador: " + response + ".");
+            }
+        } catch (IOException | InterruptedException e) {
+            System.out.println("Ocorreu um erro ao tentar registrar a conta: " + e.getMessage());
         }
     }
+    
 
     private void showCheckBalance() {
         System.out.print(
-                "Digite o número identificador da conta que você que verificar o saldo\n"
+                "Digite o número identificador da conta que você quer verificar o saldo\n"
                         + "\n"
                         + "Digite o número: "
         );
-
+    
         int response = sc.nextInt();
-
-        Account account = bank.getAccountById(response);
-
-        if (account == null) {
-            System.out.println("Erro: Não existe uma conta com esse identificador.");
-        } else {
-            System.out.println("O saldo da conta " + account.getIdentf() + " é de: " + account.getBalance());
+    
+        try {
+            HttpResponse<String> serverResponse = accountClient.getAccountById(response);
+            String responseBody = serverResponse.body();
+    
+            if (responseBody.contains("Erro")) {
+                System.out.println("Erro: Não existe uma conta com esse identificador.");
+            } else {
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode jsonNode = objectMapper.readTree(responseBody);
+                double balance = jsonNode.get("balance").asDouble();
+                
+                System.out.println("O saldo da conta " + response + " é de: " + balance);
+            }
+        } catch (IOException | InterruptedException e) {
+            System.out.println("Ocorreu um erro ao tentar verificar o saldo: " + e.getMessage());
         }
     }
+    
 
-    private void showMakeDeposit() {
+    private void showMakeDeposit() throws IOException, InterruptedException {
         System.out.print(
                 "Digite o número identificador da conta que você quer adicionar crédito\n"
                         + "\n"
@@ -171,10 +179,11 @@ public class Interface {
 
         float quant = sc.nextFloat();
 
-        bank.addCredit(ident, quant);
+        HttpResponse<String> serverResponse = accountClient.addCredit(ident, quant);
+        System.out.println(serverResponse.body());
     }
 
-    private void showMakeDebit() {
+    private void showMakeDebit() throws IOException, InterruptedException {
         System.out.print(
                 "Digite o número identificador da conta que você quer realizar um débito\n"
                         + "\n"
@@ -192,10 +201,11 @@ public class Interface {
 
         float quant = sc.nextFloat();
 
-        bank.addDebit(ident, quant);
+        HttpResponse<String> serverResponse = accountClient.addDebit(ident, quant);
+        System.out.println(serverResponse.body());
     }
 
-    private void showMakeTransfer() {
+    private void showMakeTransfer() throws IOException, InterruptedException {
         System.out.print(
                 "Digite o número identificador da conta de origem da transferência\n"
                         + "\n"
@@ -222,7 +232,8 @@ public class Interface {
 
         float quant = sc.nextFloat();
 
-        bank.transfer(identOrig, identDest, quant);
+        HttpResponse<String> serverResponse = accountClient.transfer(identOrig, identDest, quant);
+        System.out.println(serverResponse.body());
     }
 
     private void clearScreen() {
@@ -230,7 +241,7 @@ public class Interface {
         System.out.flush();
     }
 
-    private void showMakeYieldInterest() {
+    private void showMakeYieldInterest() throws IOException, InterruptedException {
         System.out.print(
                 "Digite o número identificador da conta que você quer adicionar juros\n"
                         + "\n"
@@ -248,36 +259,30 @@ public class Interface {
 
         float rate = sc.nextFloat();
 
-        bank.yieldInterest(ident, rate);
+        HttpResponse<String> serverResponse = accountClient.yieldInterest(ident, rate);
+        System.out.println(serverResponse.body());
     }
 
-    private void showCheckData() {
+    private void showCheckData() throws IOException, InterruptedException {
         System.out.print(
-                "Digite o número identificador da conta que você que verificar os dados\n"
+                "Digite o número identificador da conta que você quer verificar os dados\n"
                         + "\n"
                         + "Digite o número: "
         );
 
         int response = sc.nextInt();
 
-        Account account = bank.getAccountById(response);
+        HttpResponse<String> serverResponse = accountClient.getAccountById(response);
 
-        if (account == null) {
-            System.out.println("Erro: Não existe uma conta com esse identificador.");
-        } else {
-            String txt = "";
-            if(account instanceof BonusAccount){
-                txt += "Conta bônus \nO score é : " + ((BonusAccount) account).getScore();
-            }
-            else if(account instanceof SavingsAccount){
-                txt += "Conta poupança";
-            }
-            else if(account instanceof Account){
-                txt += "Conta regular";
-            }
+        
+        System.out.println(serverResponse.body());
+    }
+    
 
-            txt += "\nO saldo da conta " + account.getIdentf() + " é de: " + account.getBalance();
-            System.out.println(txt);
-        }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        AccountClient accountClient = new AccountClient();
+        Interface app = new Interface(sc, accountClient);
+        app.init();
     }
 }
