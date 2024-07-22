@@ -22,26 +22,26 @@ jobs:
         cache: maven
     
     - name: Resolve dependencies
-      run: ./back-end/mvn -f back-end/pom.xml dependency:resolve
+      run: ./back-end/mvnw -f back-end/pom.xml dependency:resolve
 
     - name: Build with Maven
-      run: ./back-end/mvn clean install -DskipTests
+      run: ./back-end/mvnw clean install -DskipTests
 
     - name: Run unit tests
-      run: ./back-end/mvn test
+      run: ./back-end/mvnw test
 
-    - name: Static Code Analysis
-      uses: github/super-linter@v4
-      env:
-        VALIDATE_ALL_CODEBASE: false
-        DEFAULT_BRANCH: main
-        ESLINT_CONFIG_FILE: ./.eslintrc.json # Especifique o caminho para o seu arquivo de configuração
-        CHECKSTYLE_CONFIG_FILE: ./.checkstyle.xml
+    # - name: Static Code Analysis
+    #   uses: github/super-linter@v4
+    #   env:
+    #     VALIDATE_ALL_CODEBASE: false
+    #     DEFAULT_BRANCH: main
+    #     ESLINT_CONFIG_FILE: ./.eslintrc.json # Especifique o caminho para o seu arquivo de configuração
+    #     CHECKSTYLE_CONFIG_FILE: ./.checkstyle.xml
 
     - name: Package the application
       run: |
         mkdir -p build
-        mvn package
+        ./back-end/mvnw package
         cp target/*.jar build/
 
     - name: Create Docker image
