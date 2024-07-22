@@ -41,7 +41,7 @@ jobs:
     - name: Package the System
       run: |
         version=$(echo ${GITHUB_REF##*/})
-        zip -r ${version}.zip . -i target/
+        zip -r ${version}.zip back-end/target/
         mv ${version}.zip ${{ github.workspace }}
 
     - name: Upload the package
