@@ -4,7 +4,7 @@ name: Docker Image
 on:
   push:
     branches:
-      - features/24-consertar-erros-do-lint
+      - master
 
 jobs:
   build:
@@ -30,13 +30,13 @@ jobs:
     - name: Run unit tests
       run: ./back-end/mvnw -f back-end/pom.xml test
 
-    # - name: Static Code Analysis
-    #   uses: github/super-linter@v4
-    #   env:
-    #     VALIDATE_ALL_CODEBASE: false
-    #     DEFAULT_BRANCH: main
-    #     ESLINT_CONFIG_FILE: ./.eslintrc.json # Especifique o caminho para o seu arquivo de configuração
-    #     CHECKSTYLE_CONFIG_FILE: ./.checkstyle.xml
+    - name: Static Code Analysis
+      uses: github/super-linter@v4
+      env:
+        VALIDATE_ALL_CODEBASE: false
+        DEFAULT_BRANCH: main
+        ESLINT_CONFIG_FILE: ./.eslintrc.json # Especifique o caminho para o seu arquivo de configuração
+        CHECKSTYLE_CONFIG_FILE: ./.checkstyle.xml
 
     - name: Package the application
       run: |
