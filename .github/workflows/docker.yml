@@ -25,10 +25,10 @@ jobs:
       run: ./back-end/mvnw -f back-end/pom.xml dependency:resolve
 
     - name: Build with Maven
-      run: ./back-end/mvnw clean install -DskipTests
+      run: ./back-end/mvnw -f back-end/pom.xml clean install
 
     - name: Run unit tests
-      run: ./back-end/mvnw test
+      run: ./back-end/mvnw -f back-end/pom.xml test
 
     # - name: Static Code Analysis
     #   uses: github/super-linter@v4
