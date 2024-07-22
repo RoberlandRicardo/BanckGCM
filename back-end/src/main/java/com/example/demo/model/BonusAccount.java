@@ -9,11 +9,13 @@ public class BonusAccount extends Account {
     }
 
     public int addCreditScore(float value){
-        return this.score = (int)value/100;
+        this.score = (int)value/100;
+        return this.score;
     }
 
     public int addTransferScore(float value){
-        return this.score = (int)value/150;
+        this.score = (int)value/150;
+        return this.score;
     }
 
     public int getScore() {

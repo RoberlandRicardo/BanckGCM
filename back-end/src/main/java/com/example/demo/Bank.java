@@ -15,6 +15,8 @@ public class Bank {
         accounts = new ArrayList<>();
     }
 
+    private static final String MENSAGEM_VALOR_INVALIDO = "O valor não pode ser negativo ou zero.";
+
     public Account registerAccount(int identf, char typeOfAccount, float initialBalance) {
         for (Account ac : accounts) {
             if (ac.getIdentf() == identf) {
@@ -40,7 +42,7 @@ public class Bank {
 
     public void transfer(int idOrigin, int idDestiny, float value) {
         if (value <= 0) {
-            System.out.println("O valor não pode ser negativo ou zero.");
+            System.out.println(MENSAGEM_VALOR_INVALIDO);
             return;
         }
 
@@ -65,7 +67,7 @@ public class Bank {
 
     public void addDebit(int id, float value) {
         if (value <= 0) {
-            System.out.println("O valor não pode ser negativo ou zero.");
+            System.out.println(MENSAGEM_VALOR_INVALIDO);
             return;
         }
         Account account = getAccountById(id);
@@ -93,7 +95,7 @@ public class Bank {
 
     public void addCredit(int id, float value) {
         if (value <= 0) {
-            System.out.println("O valor não pode ser negativo ou zero.");
+            System.out.println(MENSAGEM_VALOR_INVALIDO);
             return;
         }
         Account account = getAccountById(id);

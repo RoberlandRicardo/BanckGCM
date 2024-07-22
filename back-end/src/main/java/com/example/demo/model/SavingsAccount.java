@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 public class SavingsAccount extends Account {
 
+
     public SavingsAccount(int identf) {
         super(identf);
     }
