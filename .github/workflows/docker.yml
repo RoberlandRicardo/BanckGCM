@@ -1,0 +1,66 @@
+
+name: Docker Image
+
+on:
+  push:
+    branches:
+      - features/24-consertar-erros-do-lint
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@v3
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
+    
+    - name: Resolve dependencies
+      run: ./back-end/mvnw -f back-end/pom.xml dependency:resolve
+
+    - name: Build with Maven
+      run: ./back-end/mvn clean install -DskipTests
+
+    - name: Run unit tests
+      run: ./back-end/mvn test
+
+    - name: Static Code Analysis
+      uses: github/super-linter@v4
+      env:
+        VALIDATE_ALL_CODEBASE: false
+        DEFAULT_BRANCH: main
+        ESLINT_CONFIG_FILE: ./.eslintrc.json # Especifique o caminho para o seu arquivo de configuração
+        CHECKSTYLE_CONFIG_FILE: ./.checkstyle.xml
+
+    - name: Package the application
+      run: |
+        mkdir -p build
+        mvn package
+        cp target/*.jar build/
+
+    - name: Create Docker image
+      run: docker build ./back-end --file Dockerfile -t "${{ secrets.DOCKER_USERNAME }}"/bank:latest
+
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    - name: Push Docker image
+      run: docker push "${{ secrets.DOCKER_USERNAME }}"/bank:latest
+
+    - name: Create release tag
+      run: |
+        TAG=rel-$(date +'%Y%m%d%H%M%S')
+        git tag $TAG
+        git push origin $TAG
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: app-package
+        path: build/
