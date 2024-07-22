@@ -12,6 +12,9 @@ import com.front.dto.AccountDTO;
 
 public class AccountClient {
 
+    private static final String CONTENT_TYPE = "Content-Type";
+    private static final String APPLICATION_JSON = "application/json";
+
     private final HttpClient client;
     private final ObjectMapper objectMapper;
     private final String baseUrl;
@@ -26,7 +29,7 @@ public class AccountClient {
         String requestBody = objectMapper.writeValueAsString(accountDTO);
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(baseUrl + "/conta"))
-            .header("Content-Type", "application/json")
+            .header(CONTENT_TYPE, APPLICATION_JSON)
             .POST(HttpRequest.BodyPublishers.ofString(requestBody))
             .build();
         return client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -43,7 +46,7 @@ public class AccountClient {
     public HttpResponse<String> addCredit(int accountId, float amount) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(baseUrl + "/conta/" + accountId + "/" + amount + "/credito"))
-            .header("Content-Type", "application/json")
+            .header(CONTENT_TYPE, APPLICATION_JSON)
             .PUT(HttpRequest.BodyPublishers.noBody())
             .build();
         

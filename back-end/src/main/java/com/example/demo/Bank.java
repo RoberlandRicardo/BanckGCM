@@ -15,6 +15,9 @@ public class Bank {
         accounts = new ArrayList<>();
     }
 
+    private static final String MENSAGEM_VALOR_INVALIDO = "O valor não pode ser negativo ou zero.";
+    private static final Logger logger = Logger.getLogger(Bank.class.getName());
+
     public Account registerAccount(int identf, char typeOfAccount, float initialBalance) {
         for (Account ac : accounts) {
             if (ac.getIdentf() == identf) {
@@ -40,7 +43,7 @@ public class Bank {
 
     public void transfer(int idOrigin, int idDestiny, float value) {
         if (value <= 0) {
-            System.out.println("O valor não pode ser negativo ou zero.");
+            logger.info(MENSAGEM_VALOR_INVALIDO);
             return;
         }
 
@@ -54,18 +57,18 @@ public class Bank {
             addCredit(idDestiny, value);
             if (account2 instanceof BonusAccount) {
                 int pontos = ((BonusAccount) account2).addTransferScore(value);
-                System.out.println(pontos + " pontos adicionados à conta " + account2.getIdentf());
+                logger.info(pontos + " pontos adicionados à conta " + account2.getIdentf());
             }
         } else if (account1 != null && account1.getBalance() < value) {
-            System.out.println("Conta com saldo insuficiente.");
+            logger.info("Conta com saldo insuficiente.");
         } else {
-            System.out.println("Conta não encontrada");
+            logger.info("Conta não encontrada");
         }
     }
 
     public void addDebit(int id, float value) {
         if (value <= 0) {
-            System.out.println("O valor não pode ser negativo ou zero.");
+            logger.info(MENSAGEM_VALOR_INVALIDO);
             return;
         }
         Account account = getAccountById(id);
@@ -75,10 +78,10 @@ public class Bank {
             if (!(account instanceof SavingsAccount) && (account.getBalance() - value >= -1000)) {
                 account.decreaseBalance(value);
             } else {
-                System.out.println("Conta com saldo insuficiente.");
+                logger.info("Conta com saldo insuficiente.");
             }
         } else {
-            System.out.println("Conta não encontrada.");
+            logger.info("Conta não encontrada.");
         }
     }
 
@@ -93,7 +96,7 @@ public class Bank {
 
     public void addCredit(int id, float value) {
         if (value <= 0) {
-            System.out.println("O valor não pode ser negativo ou zero.");
+            logger.info(MENSAGEM_VALOR_INVALIDO);
             return;
         }
         Account account = getAccountById(id);
@@ -101,11 +104,11 @@ public class Bank {
             account.increaseBalance(value);
             if (account instanceof BonusAccount) {
                 int pontos = ((BonusAccount) account).addCreditScore(value);
-                System.out.println(pontos == 1 ? pontos + " Ponto adicionado, "
+                logger.info(pontos == 1 ? pontos + " Ponto adicionado, "
                         : pontos + " Pontos adicionados, " + "id da conta : " + account.getIdentf());
             }
         } else {
-            System.out.println("Conta não encontrada.");
+            logger.info("Conta não encontrada.");
         }
     }
 
