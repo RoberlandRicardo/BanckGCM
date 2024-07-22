@@ -42,7 +42,6 @@ jobs:
       run: |
         version=$(echo ${GITHUB_REF##*/})
         zip -r ${version}.zip back-end/target/
-        mv ${version}.zip ${{ github.workspace }}
 
     - name: Upload the package
       uses: actions/upload-artifact@v2
