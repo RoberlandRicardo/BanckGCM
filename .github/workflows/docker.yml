@@ -41,7 +41,7 @@ jobs:
     - name: Package the application
       run: |
         mkdir -p build
-        ./back-end/mvnw package
+        ./back-end/mvnw -f back-end/pom.xml package
         cp target/*.jar build/
 
     - name: Create Docker image
