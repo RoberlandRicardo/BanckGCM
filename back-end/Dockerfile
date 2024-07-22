@@ -14,7 +14,7 @@ WORKDIR /usr/src/app
 COPY . /usr/src/app
 
 # Instale as dependências e compile o projeto
-RUN mvn clean install -DskipTests
+# RUN ./back-end/mvnw -f back-end/pom.xml clean install -DskipTests
 
 # Comando padrão para rodar o container (substitua pelo comando apropriado para a sua aplicação)
 CMD ["mvn", "spring-boot:run"]
