@@ -99,16 +99,16 @@ public class Bank {
             return;
         }
         Account account = getAccountById(id);
-        if (account != null) {
-            account.increaseBalance(value);
-            if (account instanceof BonusAccount) {
-                int pontos = ((BonusAccount) account).addCreditScore(value);
-                System.out.println(pontos == 1 ? pontos + " Ponto adicionado, "
-                        : pontos + " Pontos adicionados, " + "id da conta : " + account.getIdentf());
-            }
-        } else {
-            System.out.println("Conta não encontrada.");
-        }
+        // if (account != null) {
+        //     account.increaseBalance(value);
+        //     if (account instanceof BonusAccount) {
+        //         int pontos = ((BonusAccount) account).addCreditScore(value);
+        //         System.out.println(pontos == 1 ? pontos + " Ponto adicionado, "
+        //                 : pontos + " Pontos adicionados, " + "id da conta : " + account.getIdentf());
+        //     }
+        // } else {
+        //     System.out.println("Conta não encontrada.");
+        // }
     }
 
     public void yieldInterest(int id, float rate) {
