@@ -26,11 +26,11 @@ jobs:
     - name: Resolve dependencies
       run: ./back-end/mvnw -f back-end/pom.xml dependency:resolve 
 
-    - name: Build with Maven
-      run: ./back-end/mvnw -f back-end/pom.xml clean install
-
     - name: Run unit tests
       run: ./back-end/mvnw -f back-end/pom.xml test
+    
+    - name: Build with Maven
+      run: ./back-end/mvnw -f back-end/pom.xml clean install
 
     - name: Tag the build
       id: tag
