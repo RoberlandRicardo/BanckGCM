@@ -58,7 +58,7 @@ class AccountServiceTest {
     }
 
     @Test
-    void testConsultarConta() {
+    oid testConsultarConta() {
         AccountDTO accountDTO = new AccountDTO(ACCOUNT_ID_1, 's', INITIAL_BALANCE_100);
         accountService.adicionar(accountDTO);
 
