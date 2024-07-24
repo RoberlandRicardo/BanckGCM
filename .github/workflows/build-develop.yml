@@ -1,0 +1,44 @@
+name: Generate Build
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@v3
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Resolve dependencies
+      run: ./back-end/mvnw -f back-end/pom.xml dependency:resolve 
+
+    - name: Run unit tests
+      run: ./back-end/mvnw -f back-end/pom.xml test
+    
+    - name: Build with Maven
+      run: ./back-end/mvnw -f back-end/pom.xml clean install
+
+    - name: Tag the build
+      id: tag
+      run: |
+        TIMESTAMP=$(date +%Y%m%d%H%M%S)
+        TAG_NAME="build-${TIMESTAMP}"
+        echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_ENV
+
+    - name: Create tag
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git tag ${{ env.TAG_NAME }}
+        git push origin ${{ env.TAG_NAME }}
