@@ -74,7 +74,13 @@ public class Bank {
         if (account != null && account.getBalance() >= value) {
             account.decreaseBalance(value);
         } else if (account != null && account.getBalance() < value) {
-            if (!(account instanceof SavingsAccount) && (account.getBalance() - value >= -1000)) {
+            if (account instanceof BonusAccount) {
+                if (account.getBalance() - value >= -2000) {
+                    account.decreaseBalance(value);
+                } else {
+                    System.out.println("Conta Bônus com saldo insuficiente.");
+                }
+            } else if (!(account instanceof SavingsAccount) && (account.getBalance() - value >= -1000)) {
                 account.decreaseBalance(value);
             } else {
                 System.out.println("Conta com saldo insuficiente.");
